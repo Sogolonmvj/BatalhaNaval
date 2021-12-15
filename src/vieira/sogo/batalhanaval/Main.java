@@ -4,8 +4,8 @@ public class Main {
 
     public static void main(String[] args) {
 	    int[][] tabuleiro;
-        int navios;
-        int tiro;
+        int[][] navios;
+        int[] tiro;
         int rodada;
 
         tabuleiro = new int[10][10]; // tabuleiro 10x10
