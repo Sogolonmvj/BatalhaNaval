@@ -1,8 +1,17 @@
 package view;
 
-public class TabuleiroView {
+import domain.Embarcacao;
 
-    public void show() {
-        System.out.println("Tabuleiro!");
+import java.util.Scanner;
+
+public class TabuleiroView {
+    int linha;
+    int coluna;
+    Embarcacao posicaoNavio = new Embarcacao(linha, coluna);
+    Scanner scan = new Scanner(System.in);
+
+    public void askPosicao() {
+        System.out.println("Qual a linha?");
+
     }
 }

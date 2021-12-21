@@ -1,8 +1,10 @@
 package view;
 
+import controller.Jogo;
+
 public class JogoView {
 
-    public void show() {
-        System.out.println("Jogo!");
+    public void start() {
+        Jogo jogo = new Jogo();
     }
 }
