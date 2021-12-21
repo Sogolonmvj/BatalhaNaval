@@ -1,6 +1,6 @@
-package view;
+package vieira.sogo.batalhanaval.view;
 
-import controller.Jogo;
+import vieira.sogo.batalhanaval.controller.Jogo;
 
 public class JogoView {
 

@@ -1,4 +1,4 @@
-package enums;
+package vieira.sogo.batalhanaval.enums;
 
 public enum TipoJogador {
     HUMANO,

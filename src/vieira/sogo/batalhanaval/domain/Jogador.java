@@ -1,6 +1,6 @@
-package domain;
+package vieira.sogo.batalhanaval.domain;
 
-import enums.TipoJogador;
+import vieira.sogo.batalhanaval.enums.TipoJogador;
 
 public class Jogador {
     private String name;

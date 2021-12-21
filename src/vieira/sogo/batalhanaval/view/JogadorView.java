@@ -1,7 +1,7 @@
-package view;
+package vieira.sogo.batalhanaval.view;
 
-import domain.Jogador;
-import enums.TipoJogador;
+import vieira.sogo.batalhanaval.domain.Jogador;
+import vieira.sogo.batalhanaval.enums.TipoJogador;
 
 import java.util.Scanner;
 

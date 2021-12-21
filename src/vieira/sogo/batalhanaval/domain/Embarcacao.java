@@ -1,4 +1,4 @@
-package domain;
+package vieira.sogo.batalhanaval.domain;
 
 public class Embarcacao {
     private int linha;
