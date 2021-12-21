@@ -6,13 +6,15 @@ import vieira.sogo.batalhanaval.enums.TipoJogador;
 import java.util.Scanner;
 
 public class JogadorView {
-    private Scanner scanner;
+    Scanner scanner;
     private Jogador jogador1;
     private Jogador jogador2;
 
     public JogadorView() {
+        this.scanner = new Scanner(System.in);
+
         String name = this.askName();
-        this.jogador1 = new Jogador(name, TipoJogador.COMPUTADOR);
+        this.jogador1 = new Jogador(name, TipoJogador.HUMANO);
         this.jogador2 = new Jogador("COMPUTADOR", TipoJogador.COMPUTADOR);
     }
 

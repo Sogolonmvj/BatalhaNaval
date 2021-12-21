@@ -1,10 +1,18 @@
 package vieira.sogo.batalhanaval.view;
 
-import vieira.sogo.batalhanaval.controller.Jogo;
-
 public class JogoView {
+    private JogadorView jogadorview;
+    private EmbarcacaoView embarcacaoview;
+    private TabuleiroView tabuleiroview;
 
     public void start() {
-        Jogo jogo = new Jogo();
+        this.jogadorview = new JogadorView();
+        this.embarcacaoview = new EmbarcacaoView();
+        this.tabuleiroview = new TabuleiroView();
+
     }
+
+
+
+
 }

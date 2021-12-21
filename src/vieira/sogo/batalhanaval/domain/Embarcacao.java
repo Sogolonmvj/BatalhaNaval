@@ -8,4 +8,12 @@ public class Embarcacao {
         this.linha = linha;
         this.coluna = coluna;
     }
+
+    public int getLinha() {
+        return linha;
+    }
+
+    public int getColuna() {
+        return coluna;
+    }
 }
