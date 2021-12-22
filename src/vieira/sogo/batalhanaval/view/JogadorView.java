@@ -19,8 +19,8 @@ public class JogadorView {
     }
 
     private String askName() {
-        System.out.println("Qual o nome do joador?");
-        System.out.println("#: ");
+        System.out.println("Qual o nome do jogador?");
+        System.out.print("#: ");
         String name = scanner.nextLine();
         if (name.isBlank()) {
             System.out.println("Nome inválido!");

@@ -19,7 +19,7 @@ public class Tabuleiro {
         System.out.println("                   JOGADOR                   ");
         System.out.println("---------------------------------------------");
 
-        //INDEXLINHA
+        //INDEX LINHA
         System.out.print("|   |");
         for (int i = 0; i < indicelinha.length; i++) {
             System.out.print(" " + indicelinha[i] + " |");

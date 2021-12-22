@@ -1,78 +1,68 @@
 package vieira.sogo.batalhanaval.view;
 
 import vieira.sogo.batalhanaval.domain.Embarcacao;
+import vieira.sogo.batalhanaval.enums.Linha;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class EmbarcacaoView {
     Scanner scanner;
-    private Embarcacao[] embarcacao1 = new Embarcacao[10];
-    private Embarcacao[] embarcacao2 = new Embarcacao[10];
+    Embarcacao embarcacao;
+    private List<Embarcacao> embarcacoes = new ArrayList<>();
 
     public EmbarcacaoView() {
         this.scanner = new Scanner(System.in);
+        System.out.println("Posicione a sua embarcação");
 
         for (int i = 0; i < 10 ; i++) {
             int linha = this.askLinha();
             int coluna = this.askColuna();
-            this.embarcacao1[i] = new Embarcacao(linha, coluna);
+            this.embarcacao = new Embarcacao(linha, coluna);
+
+            embarcacoes.add(embarcacao);
         }
+
     }
 
     private int askColuna() {
-        System.out.println("Qual indice da linha?");
-        System.out.println("#: ");
-        int indice = scanner.nextInt();
-        if (indice <= 0 && indice >= 9) {
-            System.out.println("Indice inválido!");
-            indice = askColuna();
+        System.out.println("Qual o indice da coluna?");
+
+        for (int coluna = 0; coluna < 10; coluna++) {
+            System.out.print(coluna + "   ");
         }
+
+        System.out.println(" ");
+        System.out.print("#: ");
+
+        int indice = scanner.nextInt();
+
+        if (indice <= 0 || indice >= 9) {
+            System.out.println("Indice inválido!");
+            askColuna();
+        }
+
         return indice;
     }
 
     private int askLinha() {
-        String[] indicecoluna = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-        System.out.println("Qual indice do coluna?");
-        System.out.println("#: ");
-        String letra = scanner.nextLine();
-        int indice = 0;
-        if (letra.isBlank()) {
-            System.out.println("Indice inválido!");
-            indice = askLinha();
-        }else{
-            switch(letra) {
-                case "A":
-                    indice = 0;
-                    break;
-                case "B":
-                    indice = 1;
-                    break;
-                case "C":
-                    indice = 2;
-                    break;
-                case "D":
-                    indice = 3;
-                    break;
-                case "E":
-                    indice = 4;
-                    break;
-                case "F":
-                    indice = 5;
-                    break;
-                case "G":
-                    indice = 6;
-                    break;
-                case "H":
-                    indice = 7;
-                    break;
-                case "I":
-                    indice = 8;
-                    break;
-                case "J":
-                    indice = 9;
-                    break;
-            }
+        System.out.println("Qual o indice da linha?");
+
+        for (Linha linhaUsuario : Linha.values()) {
+            System.out.printf("%d - %s %n", linhaUsuario.ordinal(), linhaUsuario.name());
         }
+
+        System.out.print("#: ");
+
+        int indice = scanner.nextInt();
+
+        if (indice < 0 || indice >= Linha.values().length) {
+            System.out.println("Indice inválido!");
+            askLinha();
+        }
+
         return indice;
     }
+
 }
