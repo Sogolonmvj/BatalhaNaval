@@ -1,38 +1,72 @@
 package vieira.sogo.batalhanaval.view;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class JogoView {
+    Scanner scan;
     private JogadorView jogadorview;
     private EmbarcacaoView embarcacaoview;
     private TabuleiroView tabuleiroview;
 
+    public JogoView() {
+        this.scan = new Scanner(System.in);
+    }
+
     public void start() {
+        this.jogadorview = new JogadorView();
+        this.embarcacaoview = new EmbarcacaoView();
+        this.tabuleiroview = new TabuleiroView();
+    }
+
+    public void templateInicial(){
+        this.clearScreen();
+        System.out.println("  __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ ");
+        System.out.println(" |                 BATALHA NAVAL                 |");
+        System.out.println(" |__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __|");
+        System.out.println(" |                    GRUPO 13                   |");
+        System.out.println(" |           SOGOLON, PAULO E WANDERSON          |");
+        System.out.println(" |__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __|");
+        System.out.println(" ");
         this.menu();
     }
 
-    public void menu() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Bem vindo ao Batalha Naval!");
-        System.out.println("Deseja iniciar o jogo?");
-        System.out.println("1 - SIM");
-        System.out.println("2 - NÃO");
+    private void menu() {
+        int entrada = 0;
+
+        System.out.println("  __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ ");
+        System.out.println(" |          Deseja iniciar um novo jogo?         |");
+        System.out.println(" |           1 - SIM          2 - NÃO            |");
+        System.out.println(" |__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __|");
         System.out.print("#: ");
 
-        int entrada = scan.nextInt();
+        do {
+            try {
+                entrada = scan.nextInt();
+                if(entrada != 1 && entrada != 2){
+                    System.out.println("#: Opção inválida, tente novamente.");
+                    System.out.print("#: ");
+                    entrada = 0;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("#: Precisamos que digite apenas números, tente novamente.");
+                System.out.print("#: ");
+            }
+            scan.nextLine();
+        } while (entrada == 0);
+
+        System.out.println(" ");
 
         if (entrada == 1) {
-            this.jogadorview = new JogadorView();
-            this.embarcacaoview = new EmbarcacaoView();
-            this.tabuleiroview = new TabuleiroView();
+            this.start();
         } else if (entrada == 2) {
-            System.out.println("Jogo será reiniciado!");
-            menu();
-        } else {
-            System.out.println("Entrada inválida!");
-            menu();
+            System.out.println("Ok, bye bye!");
         }
+    }
 
+    private static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
 }
