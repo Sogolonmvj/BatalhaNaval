@@ -9,24 +9,12 @@ import java.util.Scanner;
 
 public class EmbarcacaoView {
     Scanner scanner;
-    Embarcacao embarcacao;
-    private List<Embarcacao> embarcacoes = new ArrayList<>();
 
     public EmbarcacaoView() {
         this.scanner = new Scanner(System.in);
-        System.out.println("Posicione a sua embarcação");
-
-        for (int i = 0; i < 10 ; i++) {
-            int linha = this.askLinha();
-            int coluna = this.askColuna();
-            this.embarcacao = new Embarcacao(linha, coluna);
-
-            embarcacoes.add(embarcacao);
-        }
-
     }
 
-    private int askColuna() {
+    public int askColuna() {
         System.out.println("Qual o indice da coluna?");
 
         for (int coluna = 0; coluna < 10; coluna++) {
@@ -46,7 +34,7 @@ public class EmbarcacaoView {
         return indice;
     }
 
-    private int askLinha() {
+    public int askLinha() {
         System.out.println("Qual o indice da linha?");
 
         for (Linha linhaUsuario : Linha.values()) {

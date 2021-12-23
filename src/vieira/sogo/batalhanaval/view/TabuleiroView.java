@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class TabuleiroView {
-    Tabuleiro tabuleiro = new Tabuleiro();
+    public Tabuleiro tabuleiro = new Tabuleiro();
+
+    public void show(){
+        tabuleiro.showTabuleiro();
+    }
 
 }

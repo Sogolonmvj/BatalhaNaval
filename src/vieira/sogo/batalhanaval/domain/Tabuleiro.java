@@ -44,7 +44,7 @@ public class Tabuleiro {
         return tabuleiro;
     }
 
-    public void setTabuleiro(String[][] tabuleiro) {
-        this.tabuleiro = tabuleiro;
+    public void updateTabuleiro(int linha, int coluna, String valor) {
+        this.tabuleiro[linha][coluna] = valor;
     }
 }
