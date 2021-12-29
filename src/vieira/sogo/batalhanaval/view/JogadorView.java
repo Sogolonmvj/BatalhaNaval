@@ -121,8 +121,11 @@ public class JogadorView {
                     linha = getRandomNumber(0,10);
                     coluna = getRandomNumber(0,10);
                 }else{
-                    linha = embarcacaoview.askLinha();
-                    coluna = embarcacaoview.askColuna();
+                    embarcacaoview.askPosicao();
+                    linha = embarcacaoview.linha;
+                    coluna = embarcacaoview.coluna;
+                    //linha = embarcacaoview.askLinha();
+                    //coluna = embarcacaoview.askColuna();
                 }
 
                 if (verificarPosicaoDisponivel(linha, coluna, jogadores.get(i))) {
