@@ -1,10 +1,7 @@
 package vieira.sogo.batalhanaval.view;
 
-import vieira.sogo.batalhanaval.domain.Embarcacao;
 import vieira.sogo.batalhanaval.enums.Linha;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class EmbarcacaoView {

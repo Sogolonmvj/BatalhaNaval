@@ -15,8 +15,8 @@ public class Tabuleiro {
 
     public void showTabuleiro() {
         //CABEÇALHO
-        System.out.println("---------------------------------------------");
-        System.out.println("                   JOGADOR                   ");
+        System.out.println("\n---------------------------------------------");
+        System.out.println("|                  JOGADOR                  |");
         System.out.println("---------------------------------------------");
 
         //INDEX LINHA
