@@ -184,6 +184,13 @@ public class JogadorView {
         return false;
     }
 
+    private boolean verificarDisparoEfetuado(int linha, int coluna, Jogador jogador) {
+        for (Integer[] disparo : jogador.getDisparos()) {
+            if (disparo[0] == linha && disparo[1] == coluna) return true;
+        }
+        return false;
+    }
+
     private void marcaEmbarcacoesTabuleiro(){
         for (int i = 0; i < jogadores.size() ; i++) {
             for (Embarcacao navio: jogadores.get(i).getEmbarcacoes()) {
@@ -201,7 +208,52 @@ public class JogadorView {
 
         do {
             for (int i = 0; i < jogadores.size() ; i++) {
+                int inverter = i == 0 ? 1 : 0;
 
+                boolean automatico = false;
+                if (jogadores.get(i).getTipojogador() == TipoJogador.COMPUTADOR){
+                    automatico = true;
+                } else {
+                    automatico = askCriarEmbarcacoesAutomaticamente(i);
+                }
+
+                boolean controle = true;
+
+                do {
+                    int linha;
+                    int coluna;
+
+                    if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
+                        System.out.printf("\n Posicione o %d° navio. %n", jogadores.get(i).getEmbarcacoes().size() + 1);
+
+                    if(automatico){
+                        linha = getRandomNumber(0,10);
+                        coluna = getRandomNumber(0,10);
+                    }else{
+                        embarcacaoview.askPosicao();
+                        linha = embarcacaoview.linha;
+                        coluna = embarcacaoview.coluna;
+                    }
+
+//                    if (verificarPosicaoDisponivel(linha, coluna, jogadores.get(i))) {
+//                        if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
+//                            System.out.println("Já existe uma embarcação nessa posição!");
+//                        continue;
+//                    }
+
+                    if (verificarDisparoEfetuado(linha, coluna, jogadores.get(i))) {
+                        if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
+                            System.out.println("Já foi realizado um disparo nessa posição. Informe outra.");
+                        continue;
+                    }
+
+                    jogadores.get(i).addEmbarcacao(new Embarcacao(linha, coluna));
+                    marcaEmbarcacoesTabuleiro();
+                    if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
+                        jogadores.get(i).getTabuleiro().showTabuleiro();
+                } while (controle);
+
+                System.out.println("Digite a coordenada do tiro!");
             }
         } while (true);
 

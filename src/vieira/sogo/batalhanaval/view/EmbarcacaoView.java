@@ -32,7 +32,7 @@ public class EmbarcacaoView {
             askPosicao();
         }
 
-        String letra = Character.toString(posicao.charAt(0));
+        String letra = Character.toString(posicao.charAt(0)).toUpperCase();
 
         this.coluna = Character.getNumericValue(posicao.charAt(1));
 
@@ -69,6 +69,7 @@ public class EmbarcacaoView {
                 break;
             default:
                 System.out.println("Digite uma letra de A à J.");
+                askPosicao();
         };
 
     }
