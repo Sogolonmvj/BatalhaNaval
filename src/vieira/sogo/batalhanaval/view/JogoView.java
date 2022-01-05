@@ -74,8 +74,6 @@ public class JogoView {
         clearScreen();
 
         jogadorview.jogar();
-
-
     }
 
     private boolean checarEmbacarcoes () {

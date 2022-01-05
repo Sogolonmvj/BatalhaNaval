@@ -26,15 +26,11 @@ public class JogadorView {
 
         for (int i = 0; i < quantidadeJogadores ; i++) {
             TipoJogador tipoJogador = this.askTipoJogador(i);
-            String name;
-            if(tipoJogador == TipoJogador.COMPUTADOR){
-                name = "COMPUTADOR";
-            }else{
-                name = this.askName(i);
-            }
+
+            String name = tipoJogador == TipoJogador.COMPUTADOR ? "COMPUTADOR" : this.askName(i);
+
             this.jogadores.add(new Jogador(name, tipoJogador));
         }
-        //this.jogadores.add(new Jogador("COMPUTADOR", TipoJogador.COMPUTADOR));
     }
 
     public Jogador getJogador(int indice) {
@@ -103,12 +99,7 @@ public class JogadorView {
          System.out.println(" |__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __|\n");
 
         for (int i = 0; i < jogadores.size() ; i++) {
-            boolean automatico = false;
-            if (jogadores.get(i).getTipojogador() == TipoJogador.COMPUTADOR){
-                automatico = true;
-            } else {
-                automatico = askCriarEmbarcacoesAutomaticamente(i);
-            }
+            boolean automatico = jogadores.get(i).getTipojogador() == TipoJogador.COMPUTADOR || askCriarEmbarcacoesAutomaticamente(i);
 
             do {
                 int linha;
@@ -117,25 +108,26 @@ public class JogadorView {
                 if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
                     System.out.printf("\n Posicione o %d° navio. %n", jogadores.get(i).getEmbarcacoes().size() + 1);
 
-                if(automatico){
-                    linha = getRandomNumber(0,10);
-                    coluna = getRandomNumber(0,10);
-                }else{
+                if (automatico) {
+                    linha = getRandomNumber(0, 10);
+                    coluna = getRandomNumber(0, 10);
+                } else {
                     embarcacaoview.askPosicao();
+
                     linha = embarcacaoview.linha;
                     coluna = embarcacaoview.coluna;
-                    //linha = embarcacaoview.askLinha();
-                    //coluna = embarcacaoview.askColuna();
                 }
 
-                if (verificarPosicaoDisponivel(linha, coluna, jogadores.get(i))) {
+                if (!verificarPosicaoDisponivel(linha, coluna, jogadores.get(i))) {
                     if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
                         System.out.println("Já existe uma embarcação nessa posição!");
                     continue;
                 }
 
                 jogadores.get(i).addEmbarcacao(new Embarcacao(linha, coluna));
+
                 marcaEmbarcacoesTabuleiro();
+
                 if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
                     jogadores.get(i).getTabuleiro().showTabuleiro();
             } while (jogadores.get(i).getEmbarcacoes().size() < quantidadeEmbarcacoes);
@@ -158,7 +150,7 @@ public class JogadorView {
             try {
                 entrada = scanner.nextInt();
 
-                if(entrada != 1 && entrada != 2){
+                if (entrada != 1 && entrada != 2) {
                     System.out.println("#: Opção inválida, tente novamente.");
                     System.out.print("#: ");
                     entrada = 0;
@@ -176,6 +168,8 @@ public class JogadorView {
 
     private boolean verificarPosicaoDisponivel(int linha, int coluna, Jogador jogador) {
         for (Embarcacao embarcacao: jogador.getEmbarcacoes()) {
+            System.out.println("verificarPosicaoDisponivel => param: linha => " + linha + " - coluna => " + coluna);
+            System.out.println("verificarPosicaoDisponivel => object: linha => " + embarcacao.getLinha() + " - coluna => " + embarcacao.getColuna());
             if (embarcacao.getLinha() == linha && embarcacao.getColuna() == coluna) return false;
         }
 
@@ -191,11 +185,9 @@ public class JogadorView {
     }
 
     private void marcaEmbarcacoesTabuleiro(){
-        for (int i = 0; i < jogadores.size(); i++) {
-            for (Embarcacao navio: jogadores.get(i).getEmbarcacoes()) {
-                int colunaNavio = navio.getColuna();
-                int linhaNavio = navio.getLinha();
-                jogadores.get(i).getTabuleiro().updateTabuleiro(linhaNavio, colunaNavio, "N");
+        for (Jogador jogadore : jogadores) {
+            for (Embarcacao navio : jogadore.getEmbarcacoes()) {
+                jogadore.getTabuleiro().updateTabuleiro(navio.getLinha(), navio.getColuna(), "N");
             }
         }
     }

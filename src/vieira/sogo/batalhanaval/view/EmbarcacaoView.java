@@ -1,7 +1,7 @@
 package vieira.sogo.batalhanaval.view;
 
-import vieira.sogo.batalhanaval.enums.Linha;
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,16 +9,21 @@ public class EmbarcacaoView {
     Scanner scanner;
     public int linha;
     public int coluna;
+    private List<String> letras = new ArrayList<>();
 
     public EmbarcacaoView() {
         this.scanner = new Scanner(System.in);
+
+        Collections.addAll(letras, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
     }
 
     public void askPosicao() {
         System.out.println("Qual a posicao do navio? Ex: A0, B3, G6, ...");
         System.out.println("As linhas vão de A à J.");
         System.out.println("As colunas vão de 0 à 9.");
+
         String posicao = scanner.next();
+
         boolean flagLetter = Character.isDigit(posicao.charAt(0));
         boolean flagNumber = Character.isDigit(posicao.charAt(1));
 
@@ -32,45 +37,16 @@ public class EmbarcacaoView {
             askPosicao();
         }
 
-        String letra = Character.toString(posicao.charAt(0)).toUpperCase();
+        int index = letras.indexOf(Character.toString(posicao.charAt(0)).toUpperCase());
 
         this.coluna = Character.getNumericValue(posicao.charAt(1));
 
-        switch (letra) {
-            case "A":
-                this.linha = 0;
-                break;
-            case "B":
-                this.linha = 1;
-                break;
-            case "C":
-                this.linha = 2;
-                break;
-            case "D":
-                this.linha = 3;
-                break;
-            case "E":
-                this.linha = 4;
-                break;
-            case "F":
-                this.linha = 5;
-                break;
-            case "G":
-                this.linha = 6;
-                break;
-            case "H":
-                this.linha = 7;
-                break;
-            case "I":
-                this.linha = 8;
-                break;
-            case "J":
-                this.linha = 9;
-                break;
-            default:
-                System.out.println("Digite uma letra de A à J.");
-                askPosicao();
-        };
+        if (index > -1) {
+            this.linha = index;
+        } else {
+            System.out.println("Digite uma letra de A à J.");
 
+            askPosicao();
+        }
     }
 }
