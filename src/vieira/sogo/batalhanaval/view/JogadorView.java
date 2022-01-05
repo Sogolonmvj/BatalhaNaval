@@ -144,12 +144,12 @@ public class JogadorView {
 
     }
 
-    private boolean askCriarEmbarcacoesAutomaticamente(int i) {
+    private boolean askCriarEmbarcacoesAutomaticamente (int i) {
         int entrada = 0;
 
         System.out.println("  __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ ");
         System.out.println(" |       Deseja posicionar as embarcações        |");
-        System.out.printf("  |        do %d° jogador automaticamente?        |%n", i+1);
+        System.out.printf("  |        do %d° jogador automaticamente?        |%n", i + 1);
         System.out.println(" |           1 - SIM          2 - NÃO            |");
         System.out.println(" |__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __|");
         System.out.print("#: ");
@@ -157,6 +157,7 @@ public class JogadorView {
         do {
             try {
                 entrada = scanner.nextInt();
+
                 if(entrada != 1 && entrada != 2){
                     System.out.println("#: Opção inválida, tente novamente.");
                     System.out.print("#: ");
@@ -166,33 +167,31 @@ public class JogadorView {
                 System.out.println("#: Precisamos que digite apenas números, tente novamente.");
                 System.out.print("#: ");
             }
+
             scanner.nextLine();
         } while (entrada == 0);
 
-        if (entrada == 1) {
-            return true;
-        } else if (entrada == 2) {
-            return false;
-        }
-        return false;
+        return entrada == 1;
     }
 
     private boolean verificarPosicaoDisponivel(int linha, int coluna, Jogador jogador) {
         for (Embarcacao embarcacao: jogador.getEmbarcacoes()) {
-            if (embarcacao.getLinha() == linha && embarcacao.getColuna() == coluna) return true;
+            if (embarcacao.getLinha() == linha && embarcacao.getColuna() == coluna) return false;
         }
-        return false;
+
+        return true;
     }
 
-    private boolean verificarDisparoEfetuado(int linha, int coluna, Jogador jogador) {
+    private boolean verificarDisparoEfetuado (int linha, int coluna, Jogador jogador) {
         for (Integer[] disparo : jogador.getDisparos()) {
             if (disparo[0] == linha && disparo[1] == coluna) return true;
         }
+
         return false;
     }
 
     private void marcaEmbarcacoesTabuleiro(){
-        for (int i = 0; i < jogadores.size() ; i++) {
+        for (int i = 0; i < jogadores.size(); i++) {
             for (Embarcacao navio: jogadores.get(i).getEmbarcacoes()) {
                 int colunaNavio = navio.getColuna();
                 int linhaNavio = navio.getLinha();
@@ -210,12 +209,9 @@ public class JogadorView {
             for (int i = 0; i < jogadores.size() ; i++) {
                 int inverter = i == 0 ? 1 : 0;
 
-                boolean automatico = false;
-                if (jogadores.get(i).getTipojogador() == TipoJogador.COMPUTADOR){
-                    automatico = true;
-                } else {
-                    automatico = askCriarEmbarcacoesAutomaticamente(i);
-                }
+                Jogador jogadorAtual = jogadores.get(i), adversario = jogadores.get(inverter);
+
+                boolean automatico = jogadorAtual.getTipojogador() == TipoJogador.COMPUTADOR || askCriarEmbarcacoesAutomaticamente(i);
 
                 boolean controle = true;
 
@@ -223,44 +219,60 @@ public class JogadorView {
                     int linha;
                     int coluna;
 
-                    if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
-                        System.out.printf("\n Posicione o %d° navio. %n", jogadores.get(i).getEmbarcacoes().size() + 1);
+                    if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR)
+                        System.out.printf("\n Posicione o %d° navio. %n", jogadorAtual.getEmbarcacoes().size() + 1);
 
-                    if(automatico){
-                        linha = getRandomNumber(0,10);
-                        coluna = getRandomNumber(0,10);
-                    }else{
+                    if (automatico) {
+                        linha = getRandomNumber(0, 10);
+                        coluna = getRandomNumber(0, 10);
+                    } else {
                         embarcacaoview.askPosicao();
+
                         linha = embarcacaoview.linha;
                         coluna = embarcacaoview.coluna;
                     }
 
-//                    if (verificarPosicaoDisponivel(linha, coluna, jogadores.get(i))) {
-//                        if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
-//                            System.out.println("Já existe uma embarcação nessa posição!");
-//                        continue;
-//                    }
+                    if (!verificarPosicaoDisponivel(linha, coluna, jogadorAtual)) {
+                        if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR)
+                            System.out.println("Já existe uma embarcação nessa posição!");
+                        continue;
+                    }
 
-                    if (verificarDisparoEfetuado(linha, coluna, jogadores.get(i))) {
-                        if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
+                    if (verificarDisparoEfetuado(linha, coluna, jogadorAtual)) {
+                        if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR)
                             System.out.println("Já foi realizado um disparo nessa posição. Informe outra.");
                         continue;
                     }
 
-                    jogadores.get(i).addEmbarcacao(new Embarcacao(linha, coluna));
-                    marcaEmbarcacoesTabuleiro();
+                    jogadorAtual.realizarDisparo(linha, coluna, adversario);
+
+                    //marcaEmbarcacoesTabuleiro();
                     if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
                         jogadores.get(i).getTabuleiro().showTabuleiro();
                 } while (controle);
 
                 System.out.println("Digite a coordenada do tiro!");
             }
-        } while (true);
+        } while (!existePerdedor());
+    }
 
+    private boolean existePerdedor () {
+        for (Jogador jogador : jogadores) {
+            if (!jogador.embarcacaoDisponivel()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
+    public void embarcacoesRestantes () {
+        for (Jogador jogador : jogadores) {
+            jogador.embarcacaoDisponivel();
+        }
+    }
 }

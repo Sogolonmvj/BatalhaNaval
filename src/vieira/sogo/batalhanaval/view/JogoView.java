@@ -1,11 +1,6 @@
 package vieira.sogo.batalhanaval.view;
 
-import vieira.sogo.batalhanaval.domain.Embarcacao;
-import vieira.sogo.batalhanaval.domain.Tabuleiro;
-
-import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class JogoView {
@@ -20,6 +15,8 @@ public class JogoView {
         this.jogadorview = new JogadorView();
 
         this.jogadorview.criarEmbarcacoes();
+
+        loop();
     }
 
     public void templateInicial(){
@@ -68,12 +65,21 @@ public class JogoView {
     }
 
     private void clearScreen() {
+        // fazer funcionar
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
     private void loop() {
+        clearScreen();
 
+        jogadorview.jogar();
+
+
+    }
+
+    private boolean checarEmbacarcoes () {
+        return false;
     }
 
 }

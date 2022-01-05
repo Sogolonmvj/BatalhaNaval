@@ -1,16 +1,27 @@
 package vieira.sogo.batalhanaval.domain;
 
+import vieira.sogo.batalhanaval.enums.Linha;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class Tabuleiro {
     private String[][] tabuleiro = new String[10][10];
-    private String[] indicecoluna = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+    private List<Linha> indicecoluna = new ArrayList<>();
     private String[] indicelinha = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
+    private List<String> possibleItems = new ArrayList<>();
+
     public Tabuleiro() {
-        for (int i = 0; i < this.tabuleiro.length; i++) {
-            for (int j = 0; j < this.tabuleiro[i].length; j++) {
-                this.tabuleiro[i][j] = " ";
-            }
+        for (String[] strings : this.tabuleiro) {
+            Arrays.fill(strings, " ");
         }
+
+        Collections.addAll(indicecoluna, Linha.values());
+
+        Collections.addAll(possibleItems, " ", "N", "n", "X", "-", "*");
     }
 
     public void showTabuleiro() {
@@ -21,14 +32,15 @@ public class Tabuleiro {
 
         //INDEX LINHA
         System.out.print("|   |");
-        for (int i = 0; i < indicelinha.length; i++) {
-            System.out.print(" " + indicelinha[i] + " |");
+        for (String s : indicelinha) {
+            System.out.print(" " + s + " |");
         }
         System.out.println("\n---------------------------------------------");
 
         //INDEX COLUNA + GRID TABULEIRO
         for (int i = 0; i < tabuleiro.length; i++) {
-            System.out.print("| " + indicecoluna[i] + " |");
+            System.out.print("| " + indicecoluna.get(i) + " |");
+
             for (int j = 0; j < tabuleiro[i].length; j++) {
                 System.out.print(" " + tabuleiro[i][j] + " |");
             }

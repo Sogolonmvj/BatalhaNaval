@@ -34,7 +34,7 @@ public class Jogador {
         return tipojogador;
     }
 
-    public void addEmbarcacao(Embarcacao embarcacao) {
+    public void addEmbarcacao (Embarcacao embarcacao) {
         if(!this.embarcacoes.contains(embarcacao)){
             this.embarcacoes.add(embarcacao);
         }
@@ -48,4 +48,21 @@ public class Jogador {
         return tabuleiro;
     }
 
+    public int embarcacoesRestantes () {
+        int remains = 0;
+
+        for (Embarcacao embarcacao : embarcacoes) {
+            if (!embarcacao.getAtingida()) remains++;
+        }
+
+        return remains;
+    }
+
+    public boolean embarcacaoDisponivel () {
+        return embarcacoesRestantes() > 0;
+    }
+
+    public void realizarDisparo(int linha, int coluna, Jogador adversario) {
+        System.out.println("realizando disparo " + name);
+    }
 }
