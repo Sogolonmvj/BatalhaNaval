@@ -17,8 +17,8 @@ public class EmbarcacaoView {
         Collections.addAll(letras, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
     }
 
-    public void askPosicao() {
-        System.out.println("Qual a posicao do navio? Ex: A0, B3, G6, ...");
+    public void askPosicao(String objeto) {
+        System.out.printf("Qual a posicao do %s? Ex: A0, B3, G6, ...", objeto);
         System.out.println("As linhas vão de A à J.");
         System.out.println("As colunas vão de 0 à 9.");
 
@@ -29,12 +29,12 @@ public class EmbarcacaoView {
 
         if (!(!flagLetter && flagNumber)) {
             System.out.println("Valor inválido! Por favor, insira a linha e coluna nessa ordem.");
-            askPosicao();
+            askPosicao(objeto);
         }
 
         if (posicao.length() != 2) {
             System.out.println("Valor inválido! Por favor, insira a linha e a coluna.");
-            askPosicao();
+            askPosicao(objeto);
         }
 
         int index = letras.indexOf(Character.toString(posicao.charAt(0)).toUpperCase());
@@ -46,7 +46,7 @@ public class EmbarcacaoView {
         } else {
             System.out.println("Digite uma letra de A à J.");
 
-            askPosicao();
+            askPosicao(objeto);
         }
     }
 }

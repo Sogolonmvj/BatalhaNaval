@@ -12,18 +12,12 @@ public class Jogador {
     private TipoJogador tipojogador;
     private Tabuleiro tabuleiro;
     private List<Embarcacao> embarcacoes;
-    private List<Integer[]> disparos;
 
     public Jogador(String name, TipoJogador tipojogador) {
         this.name = name;
         this.tipojogador = tipojogador;
         this.tabuleiro = new Tabuleiro();
         this.embarcacoes = new ArrayList<>();
-        this.disparos = new ArrayList<>();
-    }
-
-    public List<Integer[]> getDisparos() {
-        return disparos;
     }
 
     public String getName() {

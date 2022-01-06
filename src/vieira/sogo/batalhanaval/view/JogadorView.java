@@ -4,10 +4,7 @@ import vieira.sogo.batalhanaval.controller.Jogador;
 import vieira.sogo.batalhanaval.domain.Embarcacao;
 import vieira.sogo.batalhanaval.enums.TipoJogador;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class JogadorView {
     Scanner scanner;
@@ -99,7 +96,7 @@ public class JogadorView {
          System.out.println(" |__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __|\n");
 
         for (int i = 0; i < jogadores.size() ; i++) {
-            boolean automatico = jogadores.get(i).getTipojogador() == TipoJogador.COMPUTADOR || askCriarEmbarcacoesAutomaticamente(i);
+            boolean automatico = jogadores.get(i).getTipojogador() == TipoJogador.COMPUTADOR || askCriarEmbarcacoesAutomaticamente("Deseja criar embarcações automaticamente?");
 
             do {
                 int linha;
@@ -112,7 +109,7 @@ public class JogadorView {
                     linha = getRandomNumber(0, 10);
                     coluna = getRandomNumber(0, 10);
                 } else {
-                    embarcacaoview.askPosicao();
+                    embarcacaoview.askPosicao("navio");
 
                     linha = embarcacaoview.linha;
                     coluna = embarcacaoview.coluna;
@@ -136,12 +133,11 @@ public class JogadorView {
 
     }
 
-    private boolean askCriarEmbarcacoesAutomaticamente (int i) {
+    private boolean askCriarEmbarcacoesAutomaticamente (String texto) {
         int entrada = 0;
 
         System.out.println("  __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ ");
-        System.out.println(" |       Deseja posicionar as embarcações        |");
-        System.out.printf("  |        do %d° jogador automaticamente?        |%n", i + 1);
+        System.out.printf(" |%s|\n", texto);
         System.out.println(" |           1 - SIM          2 - NÃO            |");
         System.out.println(" |__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __|");
         System.out.print("#: ");
@@ -168,20 +164,10 @@ public class JogadorView {
 
     private boolean verificarPosicaoDisponivel(int linha, int coluna, Jogador jogador) {
         for (Embarcacao embarcacao: jogador.getEmbarcacoes()) {
-            System.out.println("verificarPosicaoDisponivel => param: linha => " + linha + " - coluna => " + coluna);
-            System.out.println("verificarPosicaoDisponivel => object: linha => " + embarcacao.getLinha() + " - coluna => " + embarcacao.getColuna());
             if (embarcacao.getLinha() == linha && embarcacao.getColuna() == coluna) return false;
         }
 
         return true;
-    }
-
-    private boolean verificarDisparoEfetuado (int linha, int coluna, Jogador jogador) {
-        for (Integer[] disparo : jogador.getDisparos()) {
-            if (disparo[0] == linha && disparo[1] == coluna) return true;
-        }
-
-        return false;
     }
 
     private void marcaEmbarcacoesTabuleiro(){
@@ -197,60 +183,101 @@ public class JogadorView {
         System.out.println(" |                    Jogadas                    |");
         System.out.println(" |__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __|\n");
 
+        boolean playsAuto = askCriarEmbarcacoesAutomaticamente("Deseja realizar disparos automaticamente?");
+        boolean automatico = false;
+
         do {
             for (int i = 0; i < jogadores.size() ; i++) {
                 int inverter = i == 0 ? 1 : 0;
 
                 Jogador jogadorAtual = jogadores.get(i), adversario = jogadores.get(inverter);
 
-                boolean automatico = jogadorAtual.getTipojogador() == TipoJogador.COMPUTADOR || askCriarEmbarcacoesAutomaticamente(i);
-
-                boolean controle = true;
+                if (jogadorAtual.getTipojogador() == TipoJogador.COMPUTADOR) {
+                    automatico = true;
+                } else {
+                    automatico = playsAuto;
+                }
 
                 do {
                     int linha;
                     int coluna;
 
                     if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR)
-                        System.out.printf("\n Posicione o %d° navio. %n", jogadorAtual.getEmbarcacoes().size() + 1);
+                        System.out.println("Realize um disparo");
 
                     if (automatico) {
                         linha = getRandomNumber(0, 10);
                         coluna = getRandomNumber(0, 10);
                     } else {
-                        embarcacaoview.askPosicao();
+                        embarcacaoview.askPosicao("disparo");
 
                         linha = embarcacaoview.linha;
                         coluna = embarcacaoview.coluna;
                     }
 
-                    if (!verificarPosicaoDisponivel(linha, coluna, jogadorAtual)) {
+                    String jogadorValue    = jogadorAtual.getTabuleiro().getValueFromPosition(linha, coluna);
+                    String adversarioValue = adversario.getTabuleiro().getValueFromPosition(linha, coluna);
+
+                    if (
+                            Objects.equals(jogadorValue, "X") ||
+                            Objects.equals(jogadorValue, "n") ||
+                            Objects.equals(jogadorValue, "-") ||
+                            Objects.equals(jogadorValue, "*")) {
                         if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR)
-                            System.out.println("Já existe uma embarcação nessa posição!");
+                            System.out.println("Disparo já realizado nesta posição, tente novamente.");
                         continue;
                     }
 
-                    if (verificarDisparoEfetuado(linha, coluna, jogadorAtual)) {
+                    if (Objects.equals(adversarioValue, "N") && Objects.equals(jogadorValue, "N")) {
                         if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR)
-                            System.out.println("Já foi realizado um disparo nessa posição. Informe outra.");
-                        continue;
+                            System.out.println("Você atingiu uma embarcação do adversário");
+                        adversario.getTabuleiro().updateTabuleiro(linha, coluna, " ");
+                        jogadorAtual.getTabuleiro().updateTabuleiro(linha, coluna, "X");
+                        break;
                     }
 
-                    jogadorAtual.realizarDisparo(linha, coluna, adversario);
+                    if (Objects.equals(adversarioValue, "N")) {
+                        if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR)
+                            System.out.println("Você atingiu uma embarcação do adversário");
+                        adversario.getTabuleiro().updateTabuleiro(linha, coluna, " ");
+                        jogadorAtual.getTabuleiro().updateTabuleiro(linha, coluna, "*");
+                        break;
+                    }
 
-                    //marcaEmbarcacoesTabuleiro();
-                    if (jogadores.get(i).getTipojogador() != TipoJogador.COMPUTADOR)
-                        jogadores.get(i).getTabuleiro().showTabuleiro();
-                } while (controle);
+                    if (Objects.equals(jogadorValue, "N") && Objects.equals(adversarioValue, " ")) {
+                        if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR)
+                            System.out.println("Nenhuma embarcação atingida");
+                        jogadorAtual.getTabuleiro().updateTabuleiro(linha, coluna, "n");
+                        break;
+                    }
 
-                System.out.println("Digite a coordenada do tiro!");
+                    if (
+                            Objects.equals(adversarioValue, "X") ||
+                            Objects.equals(adversarioValue, "n")
+                    ) {
+                        if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR)
+                            System.out.println("Você atingiu uma embarcação adversária");
+                        adversario.getTabuleiro().updateTabuleiro(linha, coluna, " ");
+                        jogadorAtual.getTabuleiro().updateTabuleiro(linha, coluna, "*");
+                        break;
+                    }
+
+                    jogadorAtual.getTabuleiro().updateTabuleiro(linha, coluna, "-");
+
+                    break;
+                } while (true);
+
+//                if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR) {
+                    jogadorAtual.getTabuleiro().showTabuleiro();
+//                }
             }
         } while (!existePerdedor());
     }
 
     private boolean existePerdedor () {
+        // verificar consistência
         for (Jogador jogador : jogadores) {
-            if (!jogador.embarcacaoDisponivel()) {
+            if (!jogador.getTabuleiro().possuiEmbarcacaoInteira()) {
                 return true;
             }
         }

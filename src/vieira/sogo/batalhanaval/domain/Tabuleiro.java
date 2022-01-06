@@ -2,10 +2,7 @@ package vieira.sogo.batalhanaval.domain;
 
 import vieira.sogo.batalhanaval.enums.Linha;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Tabuleiro {
     private String[][] tabuleiro = new String[10][10];
@@ -58,5 +55,20 @@ public class Tabuleiro {
 
     public void updateTabuleiro(int linha, int coluna, String valor) {
         this.tabuleiro[linha][coluna] = valor;
+    }
+
+    public String getValueFromPosition (int linha, int coluna) {
+        return tabuleiro[linha][coluna];
+    }
+
+    public boolean possuiEmbarcacaoInteira () {
+        for (String[] strings : tabuleiro) {
+            for (String valorAtual : strings) {
+                if (Objects.equals(valorAtual, "X") || Objects.equals(valorAtual, "N") || Objects.equals(valorAtual, "n"))
+                    return true;
+            }
+        }
+
+        return false;
     }
 }
