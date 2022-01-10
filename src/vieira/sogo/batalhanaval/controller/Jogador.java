@@ -16,7 +16,7 @@ public class Jogador {
     public Jogador(String name, TipoJogador tipojogador) {
         this.name = name;
         this.tipojogador = tipojogador;
-        this.tabuleiro = new Tabuleiro();
+        this.tabuleiro = new Tabuleiro(name);
         this.embarcacoes = new ArrayList<>();
     }
 

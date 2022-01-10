@@ -75,7 +75,7 @@ public class JogoView {
 
         jogadorview.jogar();
 
-
+        menu();
     }
 
     private boolean checarEmbacarcoes () {

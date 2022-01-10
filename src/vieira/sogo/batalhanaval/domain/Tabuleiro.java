@@ -8,10 +8,13 @@ public class Tabuleiro {
     private String[][] tabuleiro = new String[10][10];
     private List<Linha> indicecoluna = new ArrayList<>();
     private String[] indicelinha = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private String name;
 
     private List<String> possibleItems = new ArrayList<>();
 
-    public Tabuleiro() {
+    public Tabuleiro(String name) {
+        this.name = name;
+
         for (String[] strings : this.tabuleiro) {
             Arrays.fill(strings, " ");
         }
@@ -24,7 +27,7 @@ public class Tabuleiro {
     public void showTabuleiro() {
         //CABEÇALHO
         System.out.println("\n---------------------------------------------");
-        System.out.println("|                  JOGADOR                  |");
+        System.out.printf("|                   %s                       |%n", name);
         System.out.println("---------------------------------------------");
 
         //INDEX LINHA

@@ -17,27 +17,23 @@ public class JogadorView {
         this.scanner = new Scanner(System.in);
         this.jogadores = new ArrayList<>();
 
-        System.out.println("  __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ ");
-        System.out.println(" |              Dados dos jogadores              |");
-        System.out.println(" |__ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __|\n");
+        TipoJogador tipoJogador = TipoJogador.HUMANO;
 
-        for (int i = 0; i < quantidadeJogadores ; i++) {
-            TipoJogador tipoJogador = this.askTipoJogador(i);
+        String name = this.askName();
 
-            String name = tipoJogador == TipoJogador.COMPUTADOR ? "COMPUTADOR" : this.askName(i);
+        this.jogadores.add(new Jogador(name, tipoJogador));
 
-            this.jogadores.add(new Jogador(name, tipoJogador));
-        }
+        this.jogadores.add(new Jogador("Computador", TipoJogador.COMPUTADOR));
     }
 
     public Jogador getJogador(int indice) {
         return jogadores.get(indice);
     }
 
-    private String askName(int i) {
+    private String askName() {
         String name = "";
 
-        System.out.printf("\nQual o nome do %d° jogador?%n", i+1);
+        System.out.printf("\nQual o nome do jogador?%n");
         System.out.print("#: ");
 
         do {
@@ -267,20 +263,34 @@ public class JogadorView {
                     break;
                 } while (true);
 
-//                if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR) {
+                if (jogadorAtual.getTipojogador() != TipoJogador.COMPUTADOR) {
                     jogadorAtual.getTabuleiro().showTabuleiro();
-//                }
+                }
             }
         } while (!existePerdedor());
     }
 
     private boolean existePerdedor () {
         // verificar consistência
-        for (Jogador jogador : jogadores) {
-            if (!jogador.getTabuleiro().possuiEmbarcacaoInteira()) {
-                return true;
+            for (int i = 0; i < jogadores.size() ; i++) {
+                int inverter = i == 0 ? 1 : 0;
+
+                Jogador jogadorAtual = jogadores.get(i), adversario = jogadores.get(inverter);
+
+                if (!jogadorAtual.getTabuleiro().possuiEmbarcacaoInteira()) {
+
+                    if (jogadorAtual.getTipojogador() == TipoJogador.COMPUTADOR) {
+                        jogadorAtual.getTabuleiro().showTabuleiro();
+                    }
+
+                    if (adversario.getTipojogador() == TipoJogador.COMPUTADOR) {
+                        adversario.getTabuleiro().showTabuleiro();
+                    }
+
+                    System.out.printf("%s é o ganhador! %n", adversario.getName() );
+                    return true;
+                }
             }
-        }
 
         return false;
     }
