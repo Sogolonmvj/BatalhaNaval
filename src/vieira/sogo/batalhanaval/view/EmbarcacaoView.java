@@ -21,6 +21,7 @@ public class EmbarcacaoView {
         System.out.printf("Qual a posicao do %s? Ex: A0, B3, G6, ... %n", objeto);
         System.out.println("As linhas vão de A à J.");
         System.out.println("As colunas vão de 0 à 9.");
+        System.out.print("#: ");
 
         String posicao = scanner.next();
 
@@ -33,11 +34,6 @@ public class EmbarcacaoView {
         }
 
         if (posicao.length() != 2) {
-            System.out.println("Valor inválido! Por favor, insira a linha e a coluna.");
-            askPosicao(objeto);
-        }
-
-        if (Character.toString(posicao.charAt(0)).isEmpty() || Character.toString(posicao.charAt(1)).isEmpty() || Character.toString(posicao.charAt(0)).isBlank() || Character.toString(posicao.charAt(1)).isBlank()) {
             System.out.println("Valor inválido! Por favor, insira a linha e a coluna.");
             askPosicao(objeto);
         }
